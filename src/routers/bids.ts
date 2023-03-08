@@ -12,11 +12,7 @@ bidsRoute.post("", VerifyToken, BidController.createBidController);
 bidsRoute.get("", BidController.listAllBidController);
 
 //retrieve by id
-bidsRoute.get(
-  "/:bidId",
-  verifyBidOwnerMiddleware,
-  BidController.retrieveBidController
-);
+bidsRoute.get("/:bidId", BidController.retrieveBidController);
 
 //update by id
 bidsRoute.patch(

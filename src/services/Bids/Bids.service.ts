@@ -90,6 +90,7 @@ class BidService {
     const retrievedBid = await this.bidRepository
       .createQueryBuilder("bid")
       .where("bid.id = :id", { id: bidId })
+      .leftJoinAndSelect("bid.user", "user")
       .leftJoinAndSelect("bid.announcement", "annonunce")
       .getOne();
 
@@ -97,6 +98,9 @@ class BidService {
       id: retrievedBid?.id,
       value: retrievedBid?.value,
       createdAt: retrievedBid?.createdAt,
+      user: {
+        name: retrievedBid?.user.name,
+      },
       announce: {
         id: retrievedBid?.announcement.id,
       },
