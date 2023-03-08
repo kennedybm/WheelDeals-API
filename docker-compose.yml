@@ -1,0 +1,40 @@
+version: "3.9"
+
+services:
+  api:
+    container_name: tcm_m6
+    build: .
+    ports:
+      - 3000:3000
+    environment:
+      - DB_HOST=db
+      - DB_USER=tcm
+      - DB_PASSWORD=1234
+      - DB=tcm_database
+      - SECRET_KEY=67!7a9b2@6c5183!a5@c!abf3@426!cb8@!2a
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - .:/app
+
+  db:
+    container_name: db_tcm
+    image: postgres:latest
+    ports:
+      - 5431:5432
+    environment:
+      - POSTGRES_USER=tcm
+      - POSTGRES_PASSWORD=1234
+      - POSTGRES_DB=tcm_database
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U tcm -d tcm_database"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 5s
+    volumes:
+      - tcmM6:/var/lib/postgresql/data
+volumes:
+  tcmM6:
+    driver: local
