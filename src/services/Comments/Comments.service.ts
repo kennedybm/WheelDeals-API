@@ -1,9 +1,10 @@
+import { ObjectEncodingOptions } from "fs";
 import AppDataSource from "../../data-source";
 import { Announcement } from "../../entities/Announcement";
 import { Comment } from "../../entities/Comment";
 import { User } from "../../entities/User";
 import { AppError } from "../../errors/AppError";
-import { ICreateComment } from "../../interfaces/Comments";
+import { ICreateComment, IUpdateComment } from "../../interfaces/Comments";
 
 class CommentService {
   static commentRepository = AppDataSource.getRepository(Comment);
@@ -75,6 +76,86 @@ class CommentService {
     };
 
     return responseObj;
+  }
+
+  static async listCommentService(): Promise<Comment[]> {
+    const comments = await this.commentRepository.find();
+
+    return comments;
+  }
+
+  static async retrieveCommentService(
+    commentId: string
+  ): Promise<Comment | Object> {
+    const findComment = await this.commentRepository.findOne({
+      where: {
+        id: commentId,
+      },
+      relations: {
+        user: true,
+        announcement: true,
+      },
+    });
+
+    if (!findComment) {
+      throw new AppError(404, "Comment not found!");
+    }
+
+    let commentResponse = {
+      id: findComment.id,
+      message: findComment.message,
+      createdAt: findComment.createdAt,
+      user: {
+        id: findComment.user.id,
+        name: findComment.user.name,
+        email: findComment.user.email,
+      },
+      announce: {
+        id: findComment.announcement.id,
+      },
+    };
+    console.log(findComment);
+    console.log(commentResponse);
+
+    return commentResponse;
+  }
+
+  static async updateCommentService(
+    commentId: string,
+    { message }: IUpdateComment
+  ): Promise<Comment> {
+    if (message === "") {
+      throw new AppError(406, "Message field cannot be empyt!");
+    }
+
+    const findComment = await this.commentRepository.findOne({
+      where: { id: commentId },
+    });
+
+    if (!findComment) {
+      throw new AppError(404, "Comment not found!");
+    }
+
+    return await this.commentRepository.save({
+      ...findComment,
+      message,
+    });
+  }
+
+  static async deleteCommentService(commentId: string): Promise<boolean> {
+    const findComment = await this.commentRepository.findOne({
+      where: {
+        id: commentId,
+      },
+    });
+
+    if (!findComment) {
+      throw new AppError(404, "Comment not found!");
+    }
+
+    await this.commentRepository.delete({ id: commentId });
+
+    return true;
   }
 }
 export default CommentService;
