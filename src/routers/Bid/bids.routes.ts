@@ -1,7 +1,7 @@
 import { Router } from "express";
-import BidController from "../controllers/Bids/Bids.controllers";
-import VerifyToken from "../middlewares/authentication/verifyToken.middleware";
-import verifyBidOwnerMiddleware from "../middlewares/authentication/verifyBidOwner.middleware";
+import BidController from "../../controllers/Bids/Bids.controllers";
+import VerifyToken from "../../middlewares/authentication/verifyToken.middleware";
+import verifyBidOwnerMiddleware from "../../middlewares/authentication/verifyBidOwner.middleware";
 
 const bidsRoute = Router();
 

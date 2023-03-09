@@ -99,7 +99,9 @@ class BidService {
       value: retrievedBid?.value,
       createdAt: retrievedBid?.createdAt,
       user: {
+        id: retrievedBid?.user.id,
         name: retrievedBid?.user.name,
+        email: retrievedBid?.user.email,
       },
       announce: {
         id: retrievedBid?.announcement.id,

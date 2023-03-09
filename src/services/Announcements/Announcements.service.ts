@@ -88,9 +88,37 @@ class AnnouncementService {
   }
 
   static async listAnnouncementsService() {
-    const announcements = await this.announcementRepository.find();
+    const announcements = await this.announcementRepository.find({
+      relations: {
+        user: true,
+      },
+    });
 
-    return announcements;
+    let slicedAnnounce: any[] = [];
+
+    const deletePwd = announcements.forEach((announce) => {
+      let announceObj = {
+        id: announce.id,
+        title: announce.title,
+        announceType: announce.announceType,
+        fabricationYear: announce.fabricationYear,
+        km: announce.km,
+        price: announce.price,
+        description: announce.description,
+        category: announce.category,
+        announceCover: announce.announceCover,
+        is_active: announce.is_active,
+        user: {
+          id: announce.user.id,
+          name: announce.user.name,
+          email: announce.user.email,
+          isActive: announce.user.is_active,
+        },
+      };
+      slicedAnnounce.push(announceObj);
+    });
+
+    return slicedAnnounce;
   }
 
   static async retrieveAnnouncementService(
@@ -202,44 +230,3 @@ class AnnouncementService {
   }
 }
 export default AnnouncementService;
-
-// let response: any[] = [];
-
-//     const selectResponseFields = announcements.forEach((announce) => {
-//       response.push({
-//         id: announce.id,
-//         title: announce.title,
-//         announceType: announce.announceType,
-//         fabricationYear: announce.fabricationYear,
-//         km: announce.km,
-//         price: announce.price,
-//         description: announce.description,
-//         category: announce.category,
-//         announceCover: announce.announceCover,
-//         is_active: announce.is_active,
-//         user: {
-//           id: announce.user.id,
-//           name: announce.user.name,
-//           email: announce.user.email,
-//           description: announce.user.description,
-//         },
-//         comments: [
-//           {
-//             user: announce.comments.forEach((comment) => comment.user.name),
-//             id: announce.comments.forEach((comment) => comment.id),
-//             comment: announce.comments.forEach((comment) => comment.message),
-//             createdAt: announce.comments.forEach(
-//               (comment) => comment.createdAt
-//             ),
-//           },
-//         ],
-//         bids: [
-//           {
-//             user: announce.bids.forEach((bid) => bid.user.name),
-//             id: announce.bids.forEach((bid) => bid.id),
-//             value: announce.bids.forEach((bid) => bid.value),
-//             createdAt: announce.bids.forEach((bid) => bid.createdAt),
-//           },
-//         ],
-//       });
-//     });
