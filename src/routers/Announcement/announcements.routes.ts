@@ -1,7 +1,7 @@
 import { Router } from "express";
-import AnnouncementController from "../controllers/Announcements/Announcements.controller";
-import VerifyAnnouncementOwner from "../middlewares/authentication/verifyAnnouncementOwner.middleware";
-import VerifyToken from "../middlewares/authentication/verifyToken.middleware";
+import AnnouncementController from "../../controllers/Announcements/Announcements.controller";
+import VerifyAnnouncementOwner from "../../middlewares/authentication/verifyAnnouncementOwner.middleware";
+import VerifyToken from "../../middlewares/authentication/verifyToken.middleware";
 
 const announcementsRoute = Router();
 

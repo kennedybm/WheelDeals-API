@@ -5,6 +5,10 @@ import { User } from "../../entities/User";
 import { AppError } from "../../errors/AppError";
 
 class CommentService {
+  static commentRepository = AppDataSource.getRepository(Comment);
+  static userRepository = AppDataSource.getRepository(User);
+  static announcementRepository = AppDataSource.getRepository(Announcement);
+
   static async createCommentsService(data: any, id: any) {
     const commentManager = AppDataSource.getRepository(Comment);
     const userManager = AppDataSource.getRepository(User);
