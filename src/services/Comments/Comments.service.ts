@@ -65,6 +65,7 @@ class CommentService {
       message: joinResponse?.message,
       createdAt: joinResponse?.createdAt,
       user: {
+        id: joinResponse?.user.id,
         name: joinResponse?.user.name,
         email: joinResponse?.user.email,
       },

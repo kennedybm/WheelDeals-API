@@ -73,6 +73,7 @@ class AnnouncementService {
         category: join.category,
         isActive: join.is_active,
         user: {
+          id: join.user.id,
           name: join.user.name,
           email: join.user.email,
           cell: join.user.cell,
@@ -108,6 +109,7 @@ class AnnouncementService {
         announceCover: announce.announceCover,
         is_active: announce.is_active,
         user: {
+          id: announce.user.id,
           name: announce.user.name,
           email: announce.user.email,
           isActive: announce.user.is_active,
@@ -153,6 +155,7 @@ class AnnouncementService {
       category: join?.category,
       isActive: join?.is_active,
       user: {
+        id: join?.user.id,
         name: join?.user.name,
         email: join?.user.email,
         cell: join?.user.cell,
