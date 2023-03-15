@@ -132,18 +132,16 @@ class AnnouncementService {
       throw new AppError(404, "Announcement not found");
     }
 
-    let retrievedResponse = {};
-
     const join = await this.announcementRepository
       .createQueryBuilder("announcement")
       .where("announcement.id = :id", { id: id })
       .leftJoinAndSelect("announcement.user", "user")
       .leftJoinAndSelect("announcement.bids", "bids")
       .leftJoinAndSelect("announcement.comments", "comments")
-      .leftJoinAndSelect("announcement.galery", "galery")
+      .leftJoinAndSelect("announcement.gallery", "gallery")
       .getOne();
 
-    retrievedResponse = {
+    let retrievedResponse = {
       id: join?.id,
       title: join?.title,
       announceType: join?.announceType,
