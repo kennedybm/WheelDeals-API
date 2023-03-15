@@ -9,6 +9,7 @@ import usersRoute from "./routers/User/user.routes";
 import sessionRoute from "./routers/Session/session.routes";
 import commentRoute from "./routers/Comment/comment.routes";
 import bidsRoute from "./routers/Bid/bids.routes";
+import galleryRoutes from "./routers/Gallery/gallery.routes";
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use("/users", usersRoute);
 app.use("/login", sessionRoute);
 app.use("/announcements", announcementsRoute);
+app.use("/gallery", galleryRoutes);
 app.use("/bids", bidsRoute);
 app.use("/comments", commentRoute);
 
