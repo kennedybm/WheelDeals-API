@@ -165,7 +165,7 @@ class AnnouncementService {
       },
       bids: join?.bids,
       comments: join?.comments,
-      gallery: join?.galery,
+      gallery: join?.gallery,
     };
 
     return retrievedResponse;
