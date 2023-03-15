@@ -5,6 +5,10 @@ import VerifyToken from "../../middlewares/authentication/verifyToken.middleware
 const galleryRoutes = Router();
 
 //create gallery
-galleryRoutes.post("", VerifyToken);
+galleryRoutes.post(
+  "/:announceId",
+  VerifyToken,
+  GalleryController.createGalleryController
+);
 
 export default galleryRoutes;
