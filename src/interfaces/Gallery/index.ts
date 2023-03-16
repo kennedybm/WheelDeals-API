@@ -3,5 +3,5 @@ export interface ICreateGallery {
 }
 
 export interface IUpdateGallery {
-  url: Array<string>;
+  urlData: Array<string>;
 }
