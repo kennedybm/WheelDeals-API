@@ -15,5 +15,45 @@ class GalleryController {
 
     return res.status(201).json(newGallery);
   }
+
+  static async listGalleryController(req: Request, res: Response) {
+    const gallerys = await GalleryServices.listGalleryService();
+
+    return res.status(201).json(gallerys);
+  }
+
+  static async retrieveGalleryController(req: Request, res: Response) {
+    const { galleryId } = req.params;
+
+    const retrievedGallery = await GalleryServices.retrieveGalleryService(
+      galleryId
+    );
+
+    return res.status(201).json(retrievedGallery);
+  }
+
+  static async updateGalleryController(req: Request, res: Response) {
+    const { galleryId } = req.params;
+    const { urlData } = req.body;
+
+    const updatedGallery = await GalleryServices.updateGalleryService(
+      galleryId,
+      { urlData }
+    );
+
+    return res.status(201).json(updatedGallery);
+  }
+
+  static async deleteGalleryController(req: Request, res: Response) {
+    const { galleryId } = req.params;
+    const { url } = req.params;
+
+    const deletedGallery = await GalleryServices.deleteGalleryService(
+      galleryId,
+      url
+    );
+
+    return res.status(201).json({ message: "Deleted whit success!" });
+  }
 }
 export default GalleryController;
