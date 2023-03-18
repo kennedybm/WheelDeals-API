@@ -2,22 +2,24 @@ import { Router } from "express";
 import UserController from "../../controllers/Users/Users.controller";
 import VerifyAccountOwner from "../../middlewares/authentication/verifyAccountOwner.middleware";
 import VerifyToken from "../../middlewares/authentication/verifyToken.middleware";
+import { schemaValidation } from "../../middlewares/Schema/schemaValidation.middleware";
+import { userSchema } from "../../schemas/user.schema";
 
 const usersRoute = Router();
 
+//create user
+usersRoute.post("", schemaValidation(userSchema), UserController.createUserController);
+
+//list all
 usersRoute.get("", UserController.listUserController);
-usersRoute.post("", UserController.createUserController);
+
+//retrieve by id
 usersRoute.get("/:id", UserController.retrieveUserController);
-usersRoute.patch(
-  "/:id",
-  VerifyAccountOwner,
-  UserController.updateUserController
-);
-usersRoute.delete(
-  "/:id",
-  VerifyToken,
-  VerifyAccountOwner,
-  UserController.deleteUserController
-);
+
+//update by id
+usersRoute.patch("/:id", VerifyAccountOwner, UserController.updateUserController);
+
+//delete by id
+usersRoute.delete("/:id", VerifyToken, VerifyAccountOwner, UserController.deleteUserController);
 
 export default usersRoute;
