@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import BidService from "../../services/Bids/Bids.service";
+import BidService from "../../services/Bids/bid.service";
 
 class BidController {
   static async createBidController(req: Request, res: Response) {
