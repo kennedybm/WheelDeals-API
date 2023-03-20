@@ -2,11 +2,18 @@ import { Router } from "express";
 import BidController from "../../controllers/Bids/bid.controllers";
 import VerifyToken from "../../middlewares/authentication/verifyToken.middleware";
 import verifyBidOwnerMiddleware from "../../middlewares/authentication/verifyBidOwner.middleware";
+import { schemaValidation } from "../../middlewares/Schema/schemaValidation.middleware";
+import { bidSchema } from "../../schemas/bid.schema";
 
 const bidsRoute = Router();
 
 //create bid
-bidsRoute.post("/:announceId", VerifyToken, BidController.createBidController);
+bidsRoute.post(
+  "/:announceId",
+  VerifyToken,
+  schemaValidation(bidSchema),
+  BidController.createBidController
+);
 
 //list All
 bidsRoute.get("", BidController.listAllBidController);
