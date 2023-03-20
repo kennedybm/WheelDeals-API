@@ -6,7 +6,7 @@ import verifyBidOwnerMiddleware from "../../middlewares/authentication/verifyBid
 const bidsRoute = Router();
 
 //create bid
-bidsRoute.post("", VerifyToken, BidController.createBidController);
+bidsRoute.post("/:announceId", VerifyToken, BidController.createBidController);
 
 //list All
 bidsRoute.get("", BidController.listAllBidController);
