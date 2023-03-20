@@ -4,11 +4,11 @@ import BidService from "../../services/Bids/bid.service";
 class BidController {
   static async createBidController(req: Request, res: Response) {
     const userId = req.body.user.id;
-    const { value, announceId } = req.body;
+    const { value } = req.body;
+    const { announceId } = req.params;
 
-    const newBid = await BidService.createBidService(userId, {
+    const newBid = await BidService.createBidService(userId, announceId, {
       value,
-      announceId,
     });
 
     return res.status(201).json(newBid);
