@@ -26,19 +26,13 @@ class GalleryServices {
     }
 
     if (userID !== findAnnounce.user.id) {
-      throw new AppError(
-        403,
-        "This action is only allowed to the announcement owner"
-      );
+      throw new AppError(403, "This action is only allowed to the announcement owner");
     }
 
-    const foundGallery = findAnnounce.gallery.map((item) => item.url !== null);
+    const foundGallery = findAnnounce.gallery.map((item) => item.url);
 
-    if (foundGallery) {
-      throw new AppError(
-        400,
-        "Gallery already created, now can only be update it!"
-      );
+    if (foundGallery.length > 0) {
+      throw new AppError(400, "Gallery already created, now can only be update it!");
     }
 
     const newGallery = this.galleryRepository.create({
@@ -69,9 +63,7 @@ class GalleryServices {
     return gallerys;
   }
 
-  static async retrieveGalleryService(
-    galleryId: string
-  ): Promise<Gallery | Object> {
+  static async retrieveGalleryService(galleryId: string): Promise<Gallery | Object> {
     const findGallery = await this.galleryRepository.findOne({
       relations: {
         announcement: true,
@@ -96,10 +88,7 @@ class GalleryServices {
     return response;
   }
 
-  static async updateGalleryService(
-    galleryId: string,
-    { urlData }: IUpdateGallery
-  ) {
+  static async updateGalleryService(galleryId: string, { urlData }: IUpdateGallery) {
     const findGallery = await this.galleryRepository.findOne({
       where: { id: galleryId },
     });
@@ -112,11 +101,9 @@ class GalleryServices {
       throw new AppError(400, "Url cannot be empty!");
     }
 
-    const findRegister = findGallery.url.find(
-      (content: string): string | undefined => {
-        return urlData.find((data: string) => content === data);
-      }
-    );
+    const findRegister = findGallery.url.find((content: string): string | undefined => {
+      return urlData.find((data: string) => content === data);
+    });
 
     if (findRegister) {
       throw new AppError(400, "One ore more url's alredy registered!");
