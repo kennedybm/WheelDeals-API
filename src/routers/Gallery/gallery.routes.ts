@@ -2,6 +2,8 @@ import { Router } from "express";
 import GalleryController from "../../controllers/Gallery/gallery.controllers";
 import VerifyToken from "../../middlewares/authentication/verifyToken.middleware";
 import verifyGalleryOwner from "../../middlewares/authentication/verifyGalleryOwner.middleware";
+import { schemaValidation } from "../../middlewares/Schema/schemaValidation.middleware";
+import { gallerySchema } from "../../schemas/gallery.schema";
 
 const galleryRoutes = Router();
 
@@ -9,6 +11,7 @@ const galleryRoutes = Router();
 galleryRoutes.post(
   "/:announceId",
   VerifyToken,
+  schemaValidation(gallerySchema),
   GalleryController.createGalleryController
 );
 
@@ -19,11 +22,7 @@ galleryRoutes.get("", GalleryController.listGalleryController);
 galleryRoutes.get("/:galleryId", GalleryController.retrieveGalleryController);
 
 //update by id
-galleryRoutes.patch(
-  "/:galleryId",
-  verifyGalleryOwner,
-  GalleryController.updateGalleryController
-);
+galleryRoutes.patch("/:galleryId", verifyGalleryOwner, GalleryController.updateGalleryController);
 
 //delete
 galleryRoutes.delete(
