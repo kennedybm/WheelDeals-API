@@ -1,4 +1,3 @@
-import { ObjectEncodingOptions } from "fs";
 import AppDataSource from "../../data-source";
 import { Announcement } from "../../entities/Announcement";
 import { Comment } from "../../entities/Comment";
@@ -34,15 +33,17 @@ class CommentService {
       throw new AppError(404, "Announce not found!");
     }
 
-    const findUserComments = await this.announceRepository
-      .createQueryBuilder("announce")
-      .where("announce.id = :id", { id: announceId })
-      .leftJoinAndSelect("announce.comments", "comments")
-      .leftJoinAndSelect("comments.user", "user")
-      .where("user.id = :id", { id: userId })
-      .getOne();
+    const foundComments = await this.commentRepository.find({
+      relations: {
+        user: true,
+        announcement: true,
+      },
+    });
 
-    if (findUserComments != null) {
+    const verifyUserComments = foundComments.find(
+      (comment) => comment.announcement.id === announceId && comment.user.id === userId
+    );
+    if (verifyUserComments) {
       throw new AppError(400, "Only permited one comment per announce!");
     }
 
@@ -84,9 +85,7 @@ class CommentService {
     return comments;
   }
 
-  static async retrieveCommentService(
-    commentId: string
-  ): Promise<Comment | Object> {
+  static async retrieveCommentService(commentId: string): Promise<Comment | Object> {
     const findComment = await this.commentRepository.findOne({
       where: {
         id: commentId,
@@ -114,8 +113,6 @@ class CommentService {
         id: findComment.announcement.id,
       },
     };
-    console.log(findComment);
-    console.log(commentResponse);
 
     return commentResponse;
   }

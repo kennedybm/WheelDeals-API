@@ -1,7 +1,7 @@
 import { Router } from "express";
 import AnnouncementController from "../../controllers/Announcements/Announcements.controller";
-import VerifyAnnouncementOwner from "../../middlewares/authentication/verifyAnnouncementOwner.middleware";
-import VerifyToken from "../../middlewares/authentication/verifyToken.middleware";
+import VerifyAnnouncementOwner from "../../middlewares/Authentication/verifyAnnouncementOwner.middleware";
+import VerifyToken from "../../middlewares/Authentication/verifyToken.middleware";
 import { schemaValidation } from "../../middlewares/Schema/schemaValidation.middleware";
 import { announcementSchema } from "../../schemas/announcement.schema";
 

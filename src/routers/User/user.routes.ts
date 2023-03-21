@@ -1,7 +1,7 @@
 import { Router } from "express";
 import UserController from "../../controllers/Users/Users.controller";
-import VerifyAccountOwner from "../../middlewares/authentication/verifyAccountOwner.middleware";
-import VerifyToken from "../../middlewares/authentication/verifyToken.middleware";
+import VerifyAccountOwner from "../../middlewares/Authentication/verifyAccountOwner.middleware";
+import VerifyToken from "../../middlewares/Authentication/verifyToken.middleware";
 import { schemaValidation } from "../../middlewares/Schema/schemaValidation.middleware";
 import { userSchema } from "../../schemas/user.schema";
 

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import CommentService from "../../services/Comments/Comments.service";
+import CommentService from "../../services/Comments/comment.service";
 
 class CommentController {
   static async createCommentController(req: Request, res: Response) {
@@ -7,11 +7,7 @@ class CommentController {
     const { announceId } = req.params;
     const { message } = req.body;
 
-    const newComment = await CommentService.createCommentsService(
-      userId,
-      announceId,
-      { message }
-    );
+    const newComment = await CommentService.createCommentsService(userId, announceId, { message });
 
     return res.status(201).json(newComment);
   }
@@ -35,10 +31,7 @@ class CommentController {
     const { commentId } = req.params;
     const { message } = req.body;
 
-    const updatedComment = await CommentService.updateCommentService(
-      commentId,
-      { message }
-    );
+    const updatedComment = await CommentService.updateCommentService(commentId, { message });
 
     return res.status(201).json(updatedComment);
   }

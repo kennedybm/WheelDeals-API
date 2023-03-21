@@ -1,7 +1,9 @@
 import { Router } from "express";
 import CommentController from "../../controllers/Comments/Comment.controller";
-import VerifyToken from "../../middlewares/authentication/verifyToken.middleware";
-import verifyCommentOwnerMiddleware from "../../middlewares/authentication/verifyCommentOwner.middleware";
+import VerifyToken from "../../middlewares/Authentication/verifyToken.middleware";
+import verifyCommentOwnerMiddleware from "../../middlewares/Authentication/verifyCommentOwner.middleware";
+import { schemaValidation } from "../../middlewares/Schema/schemaValidation.middleware";
+import { commentSchema } from "../../schemas/comment.schema";
 
 const commentRoute = Router();
 
@@ -9,6 +11,7 @@ const commentRoute = Router();
 commentRoute.post(
   "/:announceId",
   VerifyToken,
+  schemaValidation(commentSchema),
   CommentController.createCommentController
 );
 
