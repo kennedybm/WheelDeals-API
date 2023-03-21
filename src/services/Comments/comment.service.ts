@@ -40,38 +40,43 @@ class CommentService {
       },
     });
 
-    console.log(foundComments);
+    const verifyUserComments = foundComments.find(
+      (comment) => comment.announcement.id === announceId && comment.user.id === userId
+    );
+    if (verifyUserComments) {
+      throw new AppError(400, "Only permited one comment per announce!");
+    }
 
-    // const newComment = this.commentRepository.create({
-    //   message,
-    //   user: findUser,
-    //   announcement: findAnnounce,
-    // });
+    const newComment = this.commentRepository.create({
+      message,
+      user: findUser,
+      announcement: findAnnounce,
+    });
 
-    // await this.commentRepository.save(newComment);
+    await this.commentRepository.save(newComment);
 
-    // const joinResponse = await this.commentRepository
-    //   .createQueryBuilder("comment")
-    //   .where("comment.id = :id", { id: newComment.id })
-    //   .leftJoinAndSelect("comment.announcement", "announce")
-    //   .leftJoinAndSelect("comment.user", "user")
-    //   .getOne();
+    const joinResponse = await this.commentRepository
+      .createQueryBuilder("comment")
+      .where("comment.id = :id", { id: newComment.id })
+      .leftJoinAndSelect("comment.announcement", "announce")
+      .leftJoinAndSelect("comment.user", "user")
+      .getOne();
 
-    // let responseObj = {
-    //   id: joinResponse?.id,
-    //   message: joinResponse?.message,
-    //   createdAt: joinResponse?.createdAt,
-    //   user: {
-    //     id: joinResponse?.user.id,
-    //     name: joinResponse?.user.name,
-    //     email: joinResponse?.user.email,
-    //   },
-    //   announce: {
-    //     id: joinResponse?.announcement.id,
-    //   },
-    // };
+    let responseObj = {
+      id: joinResponse?.id,
+      message: joinResponse?.message,
+      createdAt: joinResponse?.createdAt,
+      user: {
+        id: joinResponse?.user.id,
+        name: joinResponse?.user.name,
+        email: joinResponse?.user.email,
+      },
+      announce: {
+        id: joinResponse?.announcement.id,
+      },
+    };
 
-    return true;
+    return responseObj;
   }
 
   static async listCommentService(): Promise<Comment[]> {
@@ -108,8 +113,6 @@ class CommentService {
         id: findComment.announcement.id,
       },
     };
-    console.log(findComment);
-    console.log(commentResponse);
 
     return commentResponse;
   }
