@@ -2,11 +2,18 @@ import { Router } from "express";
 import CommentController from "../../controllers/Comments/Comment.controller";
 import VerifyToken from "../../middlewares/Authentication/verifyToken.middleware";
 import verifyCommentOwnerMiddleware from "../../middlewares/Authentication/verifyCommentOwner.middleware";
+import { schemaValidation } from "../../middlewares/Schema/schemaValidation.middleware";
+import { commentSchema } from "../../schemas/comment.schema";
 
 const commentRoute = Router();
 
 //create comment
-commentRoute.post("/:announceId", VerifyToken, CommentController.createCommentController);
+commentRoute.post(
+  "/:announceId",
+  VerifyToken,
+  schemaValidation(commentSchema),
+  CommentController.createCommentController
+);
 
 //list all comments
 commentRoute.get("", CommentController.listCommentController);
