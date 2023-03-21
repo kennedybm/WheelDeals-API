@@ -1,7 +1,7 @@
 import { Router } from "express";
 import BidController from "../../controllers/Bids/bid.controllers";
-import VerifyToken from "../../middlewares/authentication/verifyToken.middleware";
-import verifyBidOwnerMiddleware from "../../middlewares/authentication/verifyBidOwner.middleware";
+import VerifyToken from "../../middlewares/Authentication/verifyToken.middleware";
+import verifyBidOwnerMiddleware from "../../middlewares/Authentication/verifyBidOwner.middleware";
 import { schemaValidation } from "../../middlewares/Schema/schemaValidation.middleware";
 import { bidSchema } from "../../schemas/bid.schema";
 

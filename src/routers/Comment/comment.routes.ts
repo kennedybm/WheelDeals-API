@@ -1,16 +1,12 @@
 import { Router } from "express";
 import CommentController from "../../controllers/Comments/Comment.controller";
-import VerifyToken from "../../middlewares/authentication/verifyToken.middleware";
-import verifyCommentOwnerMiddleware from "../../middlewares/authentication/verifyCommentOwner.middleware";
+import VerifyToken from "../../middlewares/Authentication/verifyToken.middleware";
+import verifyCommentOwnerMiddleware from "../../middlewares/Authentication/verifyCommentOwner.middleware";
 
 const commentRoute = Router();
 
 //create comment
-commentRoute.post(
-  "/:announceId",
-  VerifyToken,
-  CommentController.createCommentController
-);
+commentRoute.post("/:announceId", VerifyToken, CommentController.createCommentController);
 
 //list all comments
 commentRoute.get("", CommentController.listCommentController);

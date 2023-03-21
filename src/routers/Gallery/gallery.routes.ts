@@ -1,7 +1,7 @@
 import { Router } from "express";
 import GalleryController from "../../controllers/Gallery/gallery.controllers";
-import VerifyToken from "../../middlewares/authentication/verifyToken.middleware";
-import verifyGalleryOwner from "../../middlewares/authentication/verifyGalleryOwner.middleware";
+import VerifyToken from "../../middlewares/Authentication/verifyToken.middleware";
+import verifyGalleryOwner from "../../middlewares/Authentication/verifyGalleryOwner.middleware";
 import { schemaValidation } from "../../middlewares/Schema/schemaValidation.middleware";
 import { gallerySchema } from "../../schemas/gallery.schema";
 
