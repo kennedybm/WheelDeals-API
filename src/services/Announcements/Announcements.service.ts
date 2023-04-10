@@ -88,8 +88,37 @@ class AnnouncementService {
   }
 
   static async listAnnouncementsService() {
-    const announcements = await this.announcementRepository.find();
-    return announcements;
+    const announcements = await this.announcementRepository.find({
+      relations: {
+        user: true,
+      },
+    });
+
+    let slicedAnnounce: any[] = [];
+
+    const deletePwd = announcements.forEach((announce) => {
+      let announceObj = {
+        id: announce.id,
+        title: announce.title,
+        announceType: announce.announceType,
+        fabricationYear: announce.fabricationYear,
+        km: announce.km,
+        price: announce.price,
+        description: announce.description,
+        category: announce.category,
+        announceCover: announce.announceCover,
+        is_active: announce.is_active,
+        user: {
+          id: announce.user.id,
+          name: announce.user.name,
+          email: announce.user.email,
+          isActive: announce.user.is_active,
+        },
+      };
+      slicedAnnounce.push(announceObj);
+    });
+
+    return slicedAnnounce;
   }
 
   static async retrieveAnnouncementService(
@@ -103,15 +132,16 @@ class AnnouncementService {
       throw new AppError(404, "Announcement not found");
     }
 
-    let retrieveResponse = {};
-
     const join = await this.announcementRepository
       .createQueryBuilder("announcement")
       .where("announcement.id = :id", { id: id })
       .leftJoinAndSelect("announcement.user", "user")
+      .leftJoinAndSelect("announcement.bids", "bids")
+      .leftJoinAndSelect("announcement.comments", "comments")
+      .leftJoinAndSelect("announcement.gallery", "gallery")
       .getOne();
 
-    retrieveResponse = {
+    let retrievedResponse = {
       id: join?.id,
       title: join?.title,
       announceType: join?.announceType,
@@ -131,9 +161,12 @@ class AnnouncementService {
         city: join?.user.city,
         isActive: join?.user.is_active,
       },
+      bids: join?.bids,
+      comments: join?.comments,
+      gallery: join?.gallery,
     };
 
-    return retrieveResponse;
+    return retrievedResponse;
   }
 
   static async updateAnnouncementService(

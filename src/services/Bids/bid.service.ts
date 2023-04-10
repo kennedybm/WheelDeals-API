@@ -13,7 +13,8 @@ class BidService {
 
   static async createBidService(
     userId: string,
-    { value, announceId }: ICreateBid
+    announceId: string,
+    { value }: ICreateBid
   ): Promise<Bid | Object> {
     if (!announceId) {
       throw new AppError(400, "Announce ID is missing!");
@@ -33,15 +34,17 @@ class BidService {
       throw new AppError(404, "Announce not found!");
     }
 
-    const findUsersBids = await this.announceRepository
-      .createQueryBuilder("announce")
-      .where("announce.id = :id", { id: announceId })
-      .leftJoinAndSelect("announce.bids", "bid")
-      .leftJoinAndSelect("bid.user", "user")
-      .where("user.id = :id", { id: userId })
-      .getOne();
+    const founBids = await this.bidRepository.find({
+      relations: {
+        user: true,
+        announcement: true,
+      },
+    });
 
-    if (findUsersBids != null) {
+    const verifyUserBids = founBids.find(
+      (bid) => bid.announcement.id === announceId && bid.user.id === userId
+    );
+    if (verifyUserBids) {
       throw new AppError(400, "Only permited one bid per announce!");
     }
 
@@ -53,15 +56,13 @@ class BidService {
 
     await this.bidRepository.save(newBid);
 
-    let responseObj = {};
-
     const joinResponse = await this.bidRepository
       .createQueryBuilder("bid")
       .where("bid.id = :id", { id: newBid.id })
       .leftJoinAndSelect("bid.announcement", "announce")
       .getOne();
 
-    responseObj = {
+    let responseObj = {
       id: joinResponse?.id,
       value: joinResponse?.value,
       createdAt: joinResponse?.createdAt,
@@ -90,6 +91,7 @@ class BidService {
     const retrievedBid = await this.bidRepository
       .createQueryBuilder("bid")
       .where("bid.id = :id", { id: bidId })
+      .leftJoinAndSelect("bid.user", "user")
       .leftJoinAndSelect("bid.announcement", "annonunce")
       .getOne();
 
@@ -97,6 +99,11 @@ class BidService {
       id: retrievedBid?.id,
       value: retrievedBid?.value,
       createdAt: retrievedBid?.createdAt,
+      user: {
+        id: retrievedBid?.user.id,
+        name: retrievedBid?.user.name,
+        email: retrievedBid?.user.email,
+      },
       announce: {
         id: retrievedBid?.announcement.id,
       },
@@ -105,10 +112,7 @@ class BidService {
     return response;
   }
 
-  static async updatedBidService(
-    bidId: string,
-    { value }: IUpdateBid
-  ): Promise<Bid | boolean> {
+  static async updatedBidService(bidId: string, { value }: IUpdateBid): Promise<Bid | boolean> {
     const verifyBid = await this.bidRepository.findOne({
       where: { id: bidId },
     });
@@ -121,15 +125,10 @@ class BidService {
     }
 
     const currentDate = new Intl.DateTimeFormat("pt-BR").format(new Date());
-    const createdAt = new Intl.DateTimeFormat("pt-BR").format(
-      verifyBid.createdAt
-    );
+    const createdAt = new Intl.DateTimeFormat("pt-BR").format(verifyBid.createdAt);
 
     if (currentDate.split("/")[0] <= createdAt.split("/")[0]) {
-      throw new AppError(
-        400,
-        "Bid cannot be updated on the same day that was created!"
-      );
+      throw new AppError(400, "Bid cannot be updated on the same day that was created!");
     }
 
     return await this.bidRepository.save({

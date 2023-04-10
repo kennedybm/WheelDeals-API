@@ -3,12 +3,13 @@ import express from "express";
 import "express-async-errors";
 import "reflect-metadata";
 import cors from "cors";
-import announcementsRoute from "./routers/announcements";
-import handleAppErrorMiddleware from "./middlewares/handleAppError.middlewares";
-import usersRoute from "./routers/user";
-import sessionRoute from "./routers/session";
-import commentRoute from "./routers/comment";
-import bidsRoute from "./routers/bids";
+import announcementsRoute from "./routers/Announcement/announcements.routes";
+import handleAppErrorMiddleware from "./middlewares/Errors/handleAppError.middlewares";
+import usersRoute from "./routers/User/user.routes";
+import sessionRoute from "./routers/Session/session.routes";
+import commentRoute from "./routers/Comment/comment.routes";
+import bidsRoute from "./routers/Bid/bids.routes";
+import galleryRoutes from "./routers/Gallery/gallery.routes";
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(express.json());
 app.use("/users", usersRoute);
 app.use("/login", sessionRoute);
 app.use("/announcements", announcementsRoute);
+app.use("/gallery", galleryRoutes);
 app.use("/bids", bidsRoute);
 app.use("/comments", commentRoute);
 

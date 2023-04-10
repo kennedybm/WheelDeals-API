@@ -8,7 +8,7 @@ import {
 import { Comment } from "./Comment";
 import { User } from "./User";
 import { Bid } from "./Bid";
-import { Galery } from "./Galery";
+import { Gallery } from "./Gallery";
 
 @Entity("Announcement")
 export class Announcement {
@@ -51,6 +51,6 @@ export class Announcement {
   @OneToMany(() => Bid, (bid) => bid.announcement)
   bids: Bid[];
 
-  @OneToMany(() => Galery, (galery) => galery.announcement)
-  galery: Galery[];
+  @OneToMany(() => Gallery, (gallery) => gallery.announcement)
+  gallery: Gallery[];
 }
