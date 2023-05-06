@@ -28,11 +28,32 @@ describe("Unit test, createSessionService functionalites", () => {
   afterAll(async () => await connection.destroy());
 
   it("Should be able to create a token - Has a valid payload", async () => {
-    const { base, valid } = createSessionServiceMock;
+    const { base, valid, invalidEmail } = createSessionServiceMock;
     const { id, email, is_active } = await userRepo.save({ ...base });
 
     const result = await SessionsService.createSessionService(valid);
-    console.log(result);
     expect(result).toStrictEqual(expect.any(Object));
+  });
+
+  it("Should be able to throw error - Invalid Email", async () => {
+    const { invalidEmail } = createSessionServiceMock;
+
+    try {
+      await SessionsService.createSessionService(invalidEmail);
+    } catch (error) {
+      expect(error).toBeInstanceOf(AppError);
+      expect(error).toHaveProperty("message", "Email or password invalid!");
+    }
+  });
+
+  it("Should be able to throw error - Invalid Password", async () => {
+    const { invalidPassword } = createSessionServiceMock;
+
+    try {
+      await SessionsService.createSessionService(invalidPassword);
+    } catch (error) {
+      expect(error).toBeInstanceOf(AppError);
+      expect(error).toHaveProperty("message", "Email or password invalid!");
+    }
   });
 });
