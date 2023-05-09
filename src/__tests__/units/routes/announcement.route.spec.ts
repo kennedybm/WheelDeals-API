@@ -46,5 +46,7 @@ describe("Unit test, Anouncement", () => {
       .send(newAnnouncement.base);
 
     expect(response.body).toHaveProperty("id");
+    expect(response.body.announceType).toEqual("Leilão");
+    console.log(response.body.announceType);
   });
 });
