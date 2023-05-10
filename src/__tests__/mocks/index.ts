@@ -3,6 +3,7 @@ import announcementRouteMock from "./routes/announcement.route.mock";
 import userRouteMock from "./routes/user.route.mock";
 import galleryRouteMock from "./routes/gallery.route.mock";
 import bidRouteMock from "./routes/bid.route.mock";
+import commentRouteMock from "./routes/comment.route.mock";
 
 export {
   createSessionServiceMock,
@@ -10,4 +11,5 @@ export {
   userRouteMock,
   galleryRouteMock,
   bidRouteMock,
+  commentRouteMock,
 };
