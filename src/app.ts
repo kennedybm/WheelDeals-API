@@ -26,7 +26,4 @@ app.use("/comments", commentRoute);
 
 app.use(handleAppErrorMiddleware);
 
-app.listen(process.env.PORT || 3001, () => {
-  console.log("App runing");
-});
 export default app;
