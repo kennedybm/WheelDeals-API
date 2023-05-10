@@ -8,14 +8,13 @@ import { Announcement } from "../../../entities/Announcement";
 import { bidRouteMock, createSessionServiceMock, announcementRouteMock } from "../../mocks";
 import SessionsService from "../../../services/Sessions/Sessions.service";
 
-describe("Unit test, Gallery", () => {
+describe("Unit test, Bid", () => {
   let connection: DataSource;
   let bidRepo: Repository<Bid>;
   let userRepo: Repository<User>;
   let announcementRepo: Repository<Announcement>;
   let token = "";
   let announceId = "";
-  let userId = "";
 
   beforeAll(async () => {
     const { valid, base } = createSessionServiceMock;
@@ -33,7 +32,6 @@ describe("Unit test, Gallery", () => {
     const newSession = await SessionsService.createSessionService(valid);
 
     token = newSession.token;
-    userId = newSession.userId;
 
     const newAnnouncement = announcementRepo.create({
       ...announcementRouteMock.base,
@@ -50,7 +48,7 @@ describe("Unit test, Gallery", () => {
 
   afterAll(async () => await connection.destroy());
 
-  it("Shoul be able to create an Gallery", async () => {
+  it("Shoul be able to create an Bid", async () => {
     const response = await request(app)
       .post(`/bids/${announceId}`)
       .set("Authorization", `Bearer ${token}`)
