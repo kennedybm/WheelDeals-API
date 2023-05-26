@@ -31,4 +31,7 @@ O backend desse projeto foi desenvolvido em Node, utilizando express e TypeORM.
    
 5. Visitar aplicação: `localhost:3000`
    
-Pronto, sua aplicação já deve estar pronta para ser utilizada.
+Pronto, sua aplicação já deve estar pronta para ser utilizada.  
+
+
+
