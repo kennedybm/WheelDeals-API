@@ -2,15 +2,15 @@ version: "3.9"
 
 services:
   api:
-    container_name: tcm_m6
+    container_name: wheel_deals_api
     build: .
     ports:
       - 3000:3000
     environment:
       - DB_HOST=db
-      - DB_USER=tcm
+      - DB_USER=wheel_deals
       - DB_PASSWORD=1234
-      - DB=tcm_database
+      - DB=wheel_deals_database
       - SECRET_KEY=67!7a9b2@6c5183!a5@c!abf3@426!cb8@!2a
     depends_on:
       db:
@@ -19,22 +19,22 @@ services:
       - .:/app
 
   db:
-    container_name: db_tcm
+    container_name: wheel_deals_db
     image: postgres:latest
     ports:
       - 5431:5432
     environment:
-      - POSTGRES_USER=tcm
+      - POSTGRES_USER=wheel_deals
       - POSTGRES_PASSWORD=1234
-      - POSTGRES_DB=tcm_database
+      - POSTGRES_DB=wheel_deals_database
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U tcm -d tcm_database"]
+      test: ["CMD-SHELL", "pg_isready -U wheel_deals -d wheel_deals_database"]
       interval: 10s
       timeout: 5s
       retries: 5
       start_period: 5s
     volumes:
-      - tcmM6:/var/lib/postgresql/data
+      - wheelDeals:/var/lib/postgresql/data
 volumes:
-  tcmM6:
+  wheelDeals:
     driver: local
